@@ -1,0 +1,480 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ROLE_STUDENT
+  ROLE_FACULTY
+  ROLE_HOD
+  ROLE_ADMIN
+}
+
+enum ProgramLevel {
+  UG
+  PG
+}
+
+enum WorkflowStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+enum WorkflowEntityType {
+  ACTIVITY
+  REQUEST
+  PROJECT
+}
+
+enum TaskStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ActivityType {
+  SEMINAR
+  WORKSHOP
+  GUEST_LECTURE
+  TECHNICAL_EVENT
+  INDUSTRIAL_VISIT
+  CONFERENCE
+  DEPARTMENT_MEETING
+  OTHER
+}
+
+enum RequestType {
+  LEAVE_OD
+  SEMINAR_PERMISSION
+  EVENT_PERMISSION
+  PROJECT_RELATED
+  RESOURCE_REQUEST
+  OTHER
+}
+
+enum ProjectDifficulty {
+  BEGINNER
+  MEDIUM
+  ADVANCED
+}
+
+enum ProjectStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  FULL
+  CLOSED
+  REJECTED
+}
+
+enum AllocationStatus {
+  DRAFT
+  GENERATED
+  HOD_REVIEW
+  FINALIZED
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ACTION_REQUIRED
+}
+
+enum AnnouncementAudience {
+  ALL
+  STUDENTS
+  FACULTY
+  UG
+  PG
+}
+
+enum AnnouncementPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+model User {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         Role           @default(ROLE_STUDENT)
+  avatarUrl    String?
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  studentProfile    StudentProfile?
+  facultyProfile    FacultyProfile?
+  activities        Activity[]
+  requests          Request[]
+  projects          Project[]
+  notifications     Notification[]
+  announcements     Announcement[]
+  auditLogs         AuditLog[]
+  workflowHistories WorkflowHistory[]
+  approvalTasks     ApprovalTask[]
+  documents         Document[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  programs    Program[]
+  faculty     FacultyProfile[]
+  activities  Activity[]
+  projects    Project[]
+
+  @@index([code])
+}
+
+model Program {
+  id            String       @id @default(uuid())
+  departmentId  String
+  department    Department   @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  name          String
+  code          String       @unique
+  level         ProgramLevel @default(UG)
+  durationYears Int          @default(4)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  batches         Batch[]
+  studentProfiles StudentProfile[]
+  projects        Project[]
+
+  @@index([departmentId])
+}
+
+model Batch {
+  id        String   @id @default(uuid())
+  programId String
+  program   Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  name      String
+  startYear Int
+  endYear   Int
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentProfiles StudentProfile[]
+  projects        Project[]
+
+  @@index([programId])
+}
+
+model StudentProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rollNumber      String   @unique
+  programId       String
+  program         Program  @relation(fields: [programId], references: [id])
+  batchId         String
+  batch           Batch    @relation(fields: [batchId], references: [id])
+  currentSemester Int      @default(1)
+  cgpa            Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  preferences ProjectPreference[]
+  allocation  ProjectAllocation?
+
+  @@index([programId])
+  @@index([batchId])
+  @@index([rollNumber])
+}
+
+model FacultyProfile {
+  id             String     @id @default(uuid())
+  userId         String     @unique
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employeeId     String     @unique
+  departmentId   String
+  department     Department @relation(fields: [departmentId], references: [id])
+  designation    String
+  specialization String?
+  cabinNumber    String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([departmentId])
+  @@index([employeeId])
+}
+
+model Workflow {
+  id            String         @id @default(uuid())
+  code          String         @unique
+  name          String
+  description   String?
+  initialStatus WorkflowStatus @default(DRAFT)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  steps     WorkflowStep[]
+  instances WorkflowInstance[]
+
+  @@index([code])
+}
+
+model WorkflowStep {
+  id           String         @id @default(uuid())
+  workflowId   String
+  workflow     Workflow       @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  stepOrder    Int
+  name         String
+  fromStatus   WorkflowStatus
+  toStatus     WorkflowStatus
+  requiredRole Role
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([workflowId])
+}
+
+model WorkflowInstance {
+  id            String             @id @default(uuid())
+  workflowId    String
+  workflow      Workflow           @relation(fields: [workflowId], references: [id])
+  entityType    WorkflowEntityType
+  entityId      String
+  currentStatus WorkflowStatus     @default(DRAFT)
+  createdById   String
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  tasks   ApprovalTask[]
+  history WorkflowHistory[]
+
+  @@index([entityId])
+  @@index([currentStatus])
+}
+
+model ApprovalTask {
+  id                 String           @id @default(uuid())
+  workflowInstanceId String
+  workflowInstance   WorkflowInstance @relation(fields: [workflowInstanceId], references: [id], onDelete: Cascade)
+  assignedRole       Role
+  assignedUserId     String?
+  assignedUser       User?            @relation(fields: [assignedUserId], references: [id])
+  status             TaskStatus       @default(PENDING)
+  actionTaken        String?
+  comments           String?
+  actedAt            DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([workflowInstanceId])
+  @@index([status])
+  @@index([assignedRole])
+}
+
+model WorkflowHistory {
+  id                 String           @id @default(uuid())
+  workflowInstanceId String
+  workflowInstance   WorkflowInstance @relation(fields: [workflowInstanceId], references: [id], onDelete: Cascade)
+  actorId            String
+  actor              User             @relation(fields: [actorId], references: [id])
+  actorRole          Role
+  action             String
+  previousStatus     WorkflowStatus
+  newStatus          WorkflowStatus
+  comments           String?
+  timestamp          DateTime         @default(now())
+
+  @@index([workflowInstanceId])
+}
+
+model Activity {
+  id                   String         @id @default(uuid())
+  departmentId         String
+  department           Department     @relation(fields: [departmentId], references: [id])
+  facultyId            String
+  faculty              User           @relation(fields: [facultyId], references: [id])
+  title                String
+  activityType         ActivityType   @default(SEMINAR)
+  description          String
+  proposedDate         DateTime
+  venue                String
+  expectedParticipants Int            @default(0)
+  budget               Float          @default(0)
+  organizer            String
+  status               WorkflowStatus @default(DRAFT)
+  remarks              String?
+  workflowInstanceId   String?        @unique
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  @@index([departmentId])
+  @@index([facultyId])
+  @@index([status])
+}
+
+model Request {
+  id                 String         @id @default(uuid())
+  studentId          String
+  student            User           @relation(fields: [studentId], references: [id])
+  requestType        RequestType    @default(LEAVE_OD)
+  title              String
+  description        String
+  status             WorkflowStatus @default(DRAFT)
+  currentApprover    Role           @default(ROLE_HOD)
+  workflowInstanceId String?        @unique
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  @@index([studentId])
+  @@index([status])
+}
+
+model Project {
+  id                 String            @id @default(uuid())
+  facultyId          String
+  faculty            User              @relation(fields: [facultyId], references: [id])
+  departmentId       String
+  department         Department        @relation(fields: [departmentId], references: [id])
+  programId          String
+  program            Program           @relation(fields: [programId], references: [id])
+  batchId            String
+  batch              Batch             @relation(fields: [batchId], references: [id])
+  title              String
+  projectCode        String            @unique
+  description        String
+  domain             String
+  technologies       String
+  difficulty         ProjectDifficulty @default(MEDIUM)
+  maxStudents        Int               @default(1)
+  allocatedCount     Int               @default(0)
+  status             ProjectStatus     @default(DRAFT)
+  workflowInstanceId String?           @unique
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  preferences ProjectPreference[]
+  allocations ProjectAllocation[]
+
+  @@index([facultyId])
+  @@index([programId])
+  @@index([batchId])
+  @@index([status])
+}
+
+model ProjectPreference {
+  id               String         @id @default(uuid())
+  studentProfileId String
+  studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id], onDelete: Cascade)
+  projectId        String
+  project          Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  rank             Int
+  createdAt        DateTime       @default(now())
+
+  @@unique([studentProfileId, projectId])
+  @@unique([studentProfileId, rank])
+  @@index([studentProfileId])
+  @@index([projectId])
+}
+
+model ProjectAllocation {
+  id               String           @id @default(uuid())
+  projectId        String
+  project          Project          @relation(fields: [projectId], references: [id])
+  studentProfileId String           @unique
+  studentProfile   StudentProfile   @relation(fields: [studentProfileId], references: [id])
+  status           AllocationStatus @default(DRAFT)
+  allocatedById    String?
+  allocationReason String?
+  allocatedAt      DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@index([projectId])
+  @@index([status])
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  recipientId String
+  recipient   User             @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  title       String
+  message     String
+  type        NotificationType @default(INFO)
+  isRead      Boolean          @default(false)
+  link        String?
+  createdAt   DateTime         @default(now())
+
+  @@index([recipientId])
+  @@index([isRead])
+}
+
+model Announcement {
+  id          String               @id @default(uuid())
+  authorId    String
+  author      User                 @relation(fields: [authorId], references: [id])
+  title       String
+  content     String
+  audience    AnnouncementAudience @default(ALL)
+  priority    AnnouncementPriority @default(NORMAL)
+  publishDate DateTime             @default(now())
+  expiryDate  DateTime?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@index([audience])
+  @@index([priority])
+}
+
+model Document {
+  id             String   @id @default(uuid())
+  entityType     String
+  entityId       String
+  fileName       String
+  storedFileName String
+  filePath       String
+  fileSize       Int
+  mimeType       String
+  uploadedById   String
+  uploadedBy     User     @relation(fields: [uploadedById], references: [id])
+  createdAt      DateTime @default(now())
+
+  @@index([entityType, entityId])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id])
+  actorRole  String?
+  action     String
+  entityType String
+  entityId   String?
+  oldValue   String?
+  newValue   String?
+  ipAddress  String?
+  userAgent  String?
+  timestamp  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([action])
+  @@index([entityType])
+  @@index([timestamp])
+}

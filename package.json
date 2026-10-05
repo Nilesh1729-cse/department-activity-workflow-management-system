@@ -1,0 +1,30 @@
+{
+  "name": "department-activity-workflow-management-system",
+  "version": "1.0.0",
+  "description": "Production-structured Department Activity & Workflow Management System for College Engineering Departments",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build": "cd server && npm run build && cd ../client && npm run build",
+    "prisma:generate": "cd server && npx prisma generate",
+    "prisma:migrate": "cd server && npx prisma migrate dev",
+    "prisma:deploy": "cd server && npx prisma migrate deploy",
+    "prisma:seed": "cd server && npm run seed",
+    "test": "cd server && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "keywords": [
+    "department-management",
+    "workflow-engine",
+    "project-allocation",
+    "college-portal",
+    "rbac"
+  ],
+  "author": "Department Engineering Team",
+  "license": "MIT"
+}
