@@ -303,7 +303,7 @@ Verify or edit `server/.env`:
 ```env
 PORT=5000
 NODE_ENV=development
-DATABASE_URL="postgresql://postgres:Nilesh@localhost:5432/dept_management?schema=public"
+DATABASE_URL="postgresql://postgres:your_password@localhost:5432/dept_management?schema=public"
 JWT_SECRET="super-secure-jwt-secret-key-change-in-production-dept-management-2025"
 JWT_EXPIRES_IN="24h"
 CLIENT_URL="http://localhost:5173"
@@ -397,12 +397,12 @@ cd client && node ./node_modules/typescript/bin/tsc --noEmit
 
 ## 9. Documentation Reference
 
-Detailed documentation is available in the [`docs/`](file:///c:/Users/niles/Downloads/Department%20Activity%20&%20Workflow%20Management%20System/docs/) directory:
-- [**Viva / Defense Preparation Guide (`docs/viva-notes.md`)**](file:///c:/Users/niles/Downloads/Department%20Activity%20&%20Workflow%20Management%20System/docs/viva-notes.md) - Complete Q&A for lab examiners.
-- [**System Architecture (`docs/architecture.md`)**](file:///c:/Users/niles/Downloads/Department%20Activity%20&%20Workflow%20Management%20System/docs/architecture.md) - Deep dive into layered design and data flow.
-- [**Workflow Engine Specification (`docs/workflows.md`)**](file:///c:/Users/niles/Downloads/Department%20Activity%20&%20Workflow%20Management%20System/docs/workflows.md) - State machine and transition mechanics.
-- [**Database Dictionary & ERD (`docs/database.md`)**](file:///c:/Users/niles/Downloads/Department%20Activity%20&%20Workflow%20Management%20System/docs/database.md) - Complete schema entity details.
-- [**REST API Reference (`docs/api.md`)**](file:///c:/Users/niles/Downloads/Department%20Activity%20&%20Workflow%20Management%20System/docs/api.md) - Endpoint catalog, payloads, and responses.
+Detailed documentation is available in the [`docs/`](./docs/) directory:
+- [**Viva / Defense Preparation Guide (`docs/viva-notes.md`)**](./docs/viva-notes.md) - Complete Q&A for lab examiners.
+- [**System Architecture (`docs/architecture.md`)**](./docs/architecture.md) - Deep dive into layered design and data flow.
+- [**Workflow Engine Specification (`docs/workflows.md`)**](./docs/workflows.md) - State machine and transition mechanics.
+- [**Database Dictionary & ERD (`docs/database.md`)**](./docs/database.md) - Complete schema entity details.
+- [**REST API Reference (`docs/api.md`)**](./docs/api.md) - Endpoint catalog, payloads, and responses.
 
 ---
 
