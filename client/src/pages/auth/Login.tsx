@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../api/client';
 import { GraduationCap, Lock, Mail, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { ThemeToggle } from '../../components/ThemeToggle';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -51,7 +52,12 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-900 dark:bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden transition-colors">
+      {/* Theme Toggle in top-right */}
+      <div className="absolute top-4 right-4 z-20 bg-white/10 dark:bg-slate-800/60 backdrop-blur-md rounded-2xl border border-white/10 dark:border-slate-700/60 p-1">
+        <ThemeToggle />
+      </div>
+
       {/* Background aesthetic blobs */}
       <div className="absolute top-0 -left-20 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 -right-20 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />

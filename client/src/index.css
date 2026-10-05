@@ -17,18 +17,330 @@
   }
 
   .dark body {
-    @apply bg-slate-950 text-slate-100;
-  }
-
-  /* Improve standard input/textarea/select defaults in dark mode */
-  .dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
-  .dark select,
-  .dark textarea {
-    @apply bg-slate-900 border-slate-700 text-slate-100 placeholder-slate-500 focus:border-brand-500 focus:ring-brand-500/20;
+    background-color: #030712 !important; /* Rich deep slate-950 */
+    color: #f3f4f6 !important;
   }
 }
 
-/* Custom scrollbars for light & dark modes */
+/* =========================================================================
+   COMPREHENSIVE MODERN DARK THEME ENGINE
+   Automatically transforms entire portal with harmonious, high-contrast palette
+   ========================================================================= */
+
+/* 1. Core Surfaces: Cards, Modals, Dropdowns, Sidebars */
+.dark .bg-white {
+  background-color: #0f172a !important; /* Deep navy-slate (slate-900) */
+}
+
+/* 2. Secondary & Nested Surfaces: Filter bars, sub-cards, pill backgrounds */
+.dark .bg-slate-50,
+.dark .bg-slate-50\/40,
+.dark .bg-slate-50\/50,
+.dark .bg-slate-50\/60,
+.dark .bg-slate-50\/70,
+.dark .bg-slate-50\/80 {
+  background-color: #1e293b66 !important; /* Muted translucent slate-800 */
+}
+
+.dark .bg-slate-100,
+.dark .bg-slate-100\/50,
+.dark .bg-slate-100\/70,
+.dark .bg-slate-100\/80 {
+  background-color: #1e293bcc !important; /* Solid interactive slate-800 */
+}
+
+.dark .bg-slate-200,
+.dark .bg-slate-200\/70 {
+  background-color: #33415588 !important; /* slate-700 */
+}
+
+/* 3. Borders & Dividers */
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-200\/70,
+.dark .border-slate-200\/80,
+.dark .border-slate-300 {
+  border-color: #33415580 !important; /* Crisp subtle border */
+}
+
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #33415580 !important;
+}
+
+/* 4. Typography Color Inversion for Peak Contrast & Readability */
+.dark .text-slate-950,
+.dark .text-slate-900 {
+  color: #ffffff !important; /* Crisp white for primary headings */
+}
+
+.dark .text-slate-800 {
+  color: #f1f5f9 !important; /* High-legibility off-white for titles */
+}
+
+.dark .text-slate-700 {
+  color: #e2e8f0 !important; /* Soft white for labels & table contents */
+}
+
+.dark .text-slate-600 {
+  color: #cbd5e1 !important; /* Readable cool slate for body paragraphs */
+}
+
+.dark .text-slate-500 {
+  color: #94a3b8 !important; /* Muted silver for timestamps & subtitles */
+}
+
+.dark .text-slate-400 {
+  color: #64748b !important; /* Subtle secondary metadata */
+}
+
+/* 5. Hover Transitions */
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-50\/60:hover,
+.dark .hover\:bg-slate-50\/80:hover {
+  background-color: #1e293b !important;
+}
+
+.dark .hover\:bg-slate-100:hover,
+.dark .hover\:bg-slate-100\/80:hover {
+  background-color: #334155aa !important;
+}
+
+.dark .hover\:text-slate-900:hover {
+  color: #ffffff !important;
+}
+
+.dark .hover\:text-slate-700:hover {
+  color: #f8fafc !important;
+}
+
+/* 6. Form Controls: Inputs, Textareas, Select Menus */
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+.dark select,
+.dark textarea {
+  background-color: #0b1120 !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+.dark select option {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+/* 7. Tables */
+.dark table {
+  color: #cbd5e1 !important;
+}
+
+.dark table thead {
+  background-color: #0b1120 !important;
+}
+
+.dark table thead th {
+  color: #94a3b8 !important;
+  border-bottom: 1px solid #33415580 !important;
+}
+
+.dark table tbody tr {
+  border-bottom: 1px solid #33415560 !important;
+}
+
+.dark table tbody tr:hover {
+  background-color: #1e293b40 !important;
+}
+
+/* 8. Thematic Tinted Cards (Indigo, Brand, Emerald, Amber, Rose, Purple, Teal) */
+/* Indigo */
+.dark .bg-indigo-50,
+.dark .bg-indigo-50\/40,
+.dark .bg-indigo-50\/50 {
+  background-color: #1e1b4b60 !important;
+}
+.dark .border-indigo-100,
+.dark .border-indigo-100\/80,
+.dark .border-indigo-200 {
+  border-color: #4338ca80 !important;
+}
+.dark .text-indigo-950,
+.dark .text-indigo-900 {
+  color: #e0e7ff !important;
+}
+.dark .text-indigo-700,
+.dark .text-indigo-600 {
+  color: #a5b4fc !important;
+}
+.dark .bg-indigo-100 {
+  background-color: #312e81 !important;
+}
+
+/* Brand Blue */
+.dark .bg-brand-50,
+.dark .bg-brand-50\/40,
+.dark .bg-brand-50\/50,
+.dark .bg-brand-50\/80 {
+  background-color: #0c4a6e50 !important;
+}
+.dark .border-brand-100,
+.dark .border-brand-200,
+.dark .border-brand-200\/80 {
+  border-color: #0284c780 !important;
+}
+.dark .text-brand-950,
+.dark .text-brand-900 {
+  color: #e0f2fe !important;
+}
+.dark .text-brand-700,
+.dark .text-brand-600 {
+  color: #38bdf8 !important;
+}
+.dark .bg-brand-100 {
+  background-color: #075985 !important;
+}
+
+/* Emerald */
+.dark .bg-emerald-50,
+.dark .bg-emerald-50\/40,
+.dark .bg-emerald-50\/50 {
+  background-color: #064e3b50 !important;
+}
+.dark .border-emerald-100,
+.dark .border-emerald-200 {
+  border-color: #05966980 !important;
+}
+.dark .text-emerald-950,
+.dark .text-emerald-900 {
+  color: #ecfdf5 !important;
+}
+.dark .text-emerald-800,
+.dark .text-emerald-700,
+.dark .text-emerald-600 {
+  color: #4ade80 !important;
+}
+.dark .bg-emerald-100 {
+  background-color: #065f46 !important;
+}
+
+/* Amber */
+.dark .bg-amber-50,
+.dark .bg-amber-50\/50,
+.dark .bg-amber-50\/60 {
+  background-color: #78350f50 !important;
+}
+.dark .border-amber-100,
+.dark .border-amber-200,
+.dark .border-amber-200\/80 {
+  border-color: #d9770680 !important;
+}
+.dark .text-amber-950,
+.dark .text-amber-900 {
+  color: #fffbeb !important;
+}
+.dark .text-amber-800,
+.dark .text-amber-700,
+.dark .text-amber-600 {
+  color: #fcd34d !important;
+}
+.dark .bg-amber-100 {
+  background-color: #78350f !important;
+}
+
+/* Rose */
+.dark .bg-rose-50,
+.dark .bg-rose-50\/50 {
+  background-color: #88133750 !important;
+}
+.dark .border-rose-100,
+.dark .border-rose-200 {
+  border-color: #e11d4880 !important;
+}
+.dark .text-rose-950,
+.dark .text-rose-900 {
+  color: #fff1f2 !important;
+}
+.dark .text-rose-800,
+.dark .text-rose-700,
+.dark .text-rose-600 {
+  color: #fb7185 !important;
+}
+.dark .bg-rose-100 {
+  background-color: #881337 !important;
+}
+
+/* Purple */
+.dark .bg-purple-50,
+.dark .bg-purple-50\/50 {
+  background-color: #581c8750 !important;
+}
+.dark .border-purple-100,
+.dark .border-purple-200 {
+  border-color: #9333ea80 !important;
+}
+.dark .text-purple-950,
+.dark .text-purple-900 {
+  color: #faf5ff !important;
+}
+.dark .text-purple-800,
+.dark .text-purple-700,
+.dark .text-purple-600 {
+  color: #c084fc !important;
+}
+.dark .bg-purple-100 {
+  background-color: #581c87 !important;
+}
+
+/* Teal */
+.dark .bg-teal-50 {
+  background-color: #134e4a50 !important;
+}
+.dark .border-teal-100,
+.dark .border-teal-200 {
+  border-color: #0d948880 !important;
+}
+.dark .text-teal-800,
+.dark .text-teal-700 {
+  color: #2dd4bf !important;
+}
+.dark .bg-teal-100 {
+  background-color: #134e4a !important;
+}
+
+/* Orange */
+.dark .bg-orange-100 {
+  background-color: #7c2d12 !important;
+}
+.dark .text-orange-800,
+.dark .text-orange-700 {
+  color: #fdba74 !important;
+}
+
+/* 9. Code, Tags & Badges */
+.dark code {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+  border-color: #334155 !important;
+}
+
+/* 10. Recharts SVG Telemetry elements */
+.dark .recharts-cartesian-grid line {
+  stroke: #33415566 !important;
+}
+
+.dark .recharts-text,
+.dark .recharts-cartesian-axis-tick-value {
+  fill: #94a3b8 !important;
+}
+
+.dark .recharts-legend-item-text {
+  color: #cbd5e1 !important;
+}
+
+/* 11. Custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -39,7 +351,7 @@
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #090d16;
 }
 
 ::-webkit-scrollbar-thumb {
