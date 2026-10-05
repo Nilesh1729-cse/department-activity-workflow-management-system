@@ -9,9 +9,9 @@
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",
     "build": "cd server && npm run build && cd ../client && npm run build",
-    "prisma:generate": "cd server && npx prisma generate",
-    "prisma:migrate": "cd server && npx prisma migrate dev",
-    "prisma:deploy": "cd server && npx prisma migrate deploy",
+    "prisma:generate": "cd server && npm run prisma:generate",
+    "prisma:migrate": "cd server && npm run prisma:migrate",
+    "prisma:deploy": "cd server && npm run prisma:deploy",
     "prisma:seed": "cd server && npm run seed",
     "test": "cd server && npm test"
   },
