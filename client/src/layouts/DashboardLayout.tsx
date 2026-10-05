@@ -9,10 +9,10 @@ export const DashboardLayout: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-          <p className="text-sm font-medium text-slate-500">Loading portal workspace...</p>
+          <div className="w-10 h-10 border-4 border-brand-200 dark:border-brand-900 border-t-brand-600 rounded-full animate-spin" />
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Loading portal workspace...</p>
         </div>
       </div>
     );
@@ -23,7 +23,7 @@ export const DashboardLayout: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50/70">
+    <div className="flex min-h-screen bg-slate-50/70 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <Navbar />

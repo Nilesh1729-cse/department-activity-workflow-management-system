@@ -44,6 +44,8 @@ import { AcademicManagementPage } from './pages/admin/AcademicManagementPage';
 // Profile
 import { ProfilePage } from './pages/profile/ProfilePage';
 
+import { ThemeProvider } from './context/ThemeContext';
+
 // Route Guard Component
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -55,10 +57,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
         <div className="flex flex-col items-center space-y-3">
           <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-sm font-medium text-slate-500">Authenticating session...</p>
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Authenticating session...</p>
         </div>
       </div>
     );
@@ -77,11 +79,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          {/* Public Route */}
-          <Route path="/login" element={<Login />} />
+    <ThemeProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            {/* Public Route */}
+            <Route path="/login" element={<Login />} />
 
           {/* Protected Application Layout */}
           <Route
@@ -211,5 +214,6 @@ export default function App() {
         </Routes>
       </AuthProvider>
     </BrowserRouter>
+  </ThemeProvider>
   );
 }
