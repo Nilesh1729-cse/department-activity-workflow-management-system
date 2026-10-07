@@ -13,18 +13,10 @@ A production-structured, full-stack departmental enterprise portal engineered fo
    - [3.3 Reusable Workflow State Machine](#33-reusable-workflow-state-machine)
    - [3.4 Deterministic Project Allocation Algorithm](#34-deterministic-project-allocation-algorithm)
 4. [Demo Accounts & Credentials](#demo-accounts--credentials)
-5. [Step-by-Step Viva & Laboratory Demonstration Script](#step-by-step-viva--laboratory-demonstration-script)
-   - [Flow 1: Authentication & Role-Based Access Control (RBAC)](#flow-1-authentication--role-based-access-control-rbac)
-   - [Flow 2: Student OD / Permission Request & Real-time Approval](#flow-2-student-od--permission-request--real-time-approval)
-   - [Flow 3: Faculty Activity Proposal & Budget Clearance](#flow-3-faculty-activity-proposal--budget-clearance)
-   - [Flow 4: Project Proposal & Review by HOD](#flow-4-project-proposal--review-by-hod)
-   - [Flow 5: Student Preference Ranking & Validation](#flow-5-student-preference-ranking--validation)
-   - [Flow 6: Deterministic Auto-Allocation & HOD Finalization](#flow-6-deterministic-auto-allocation--hod-finalization)
-   - [Flow 7: Department Analytics & Append-Only Audit Trail](#flow-7-department-analytics--append-only-audit-trail)
-6. [Local Installation & Setup Guide](#local-installation--setup-guide)
-7. [Docker & Containerized Setup](#docker--containerized-setup)
-8. [Automated Testing & Code Quality](#automated-testing--code-quality)
-9. [Documentation Reference](#documentation-reference)
+5. [Local Installation & Setup Guide](#local-installation--setup-guide)
+6. [Docker & Containerized Setup](#docker--containerized-setup)
+7. [Automated Testing & Code Quality](#automated-testing--code-quality)
+8. [Documentation Reference](#documentation-reference)
 
 ---
 
@@ -204,79 +196,7 @@ $$\mathbf{Demo@123}$$
 
 ---
 
-## 5. Step-by-Step Viva & Laboratory Demonstration Script
-
-### Flow 1: Authentication & Role-Based Access Control (RBAC)
-1. Navigate to `http://localhost:5173/login`.
-2. Click **"Student 1"** to log in as Rahul Deshmukh (`ROLE_STUDENT`).
-3. Notice that the sidebar only shows student-authorized modules: **Dashboard, My Requests, Projects, Announcements, Profile**.
-4. Attempt to navigate directly to `/approvals` or `/admin/users` in the URL bar. The route guard blocks access and redirects back to `/dashboard`.
-5. Log out and click **"HOD"** to log in as Dr. K. Ramanathan. Notice the complete departmental administration suite: **Approvals Queue, Department Activities, Allocation Management, Student/Faculty Directories, Reports, Audit Logs**.
-
-### Flow 2: Student OD / Permission Request & Real-time Approval
-1. Log in as **Student 1** (`student1@department.local`).
-2. Go to **"Department Requests"** $\to$ Click **"New Request"**.
-3. Select **"On-Duty (OD) Permission"**, enter title *"Hackathon Participation at IIT Madras"*, add remarks, and click **"Submit Request"**.
-4. The request enters status `UNDER_REVIEW`. Click on the request to view the interactive **Workflow Timeline** showing the pending step assigned to HOD.
-5. Log out and log in as **HOD** (`hod@department.local`).
-6. Notice the badge counter on **"Pending Approvals"**. Click **"Pending Approvals"**.
-7. Locate the hackathon request, review details, type comment *"Approved. Ensure coursework completion."*, and click **"Approve"**.
-8. Log back in as **Student 1**. The notification bell displays an unread alert: *"Your request 'Hackathon Participation at IIT Madras' has been approved"*.
-
-### Flow 3: Faculty Activity Proposal & Budget Clearance
-1. Log in as **Faculty 1** (`faculty1@department.local`).
-2. Navigate to **"Department Activities"** $\to$ Click **"Propose Activity"**.
-3. Fill in:
-   - **Type:** *Workshop*
-   - **Title:** *Hands-on Deep Learning with PyTorch*
-   - **Proposed Date:** Select an upcoming date
-   - **Venue:** *Seminar Hall B*
-   - **Expected Participants:** *60*
-   - **Estimated Budget:** *₹15,000*
-4. Click **"Submit Proposal"**.
-5. Switch to **HOD** account $\to$ Open **"Pending Approvals"** $\to$ **"Department Activities"** tab $\to$ Click **"Approve"**.
-6. The activity is now sanctioned and appears on the public departmental calendar.
-
-### Flow 4: Faculty Project Proposal & Review by HOD
-1. Log in as **Faculty 2** (`faculty2@department.local`).
-2. Go to **"Project Proposals"** $\to$ Click **"New Proposal"**.
-3. Submit a proposal for B.Tech CSE (2023-2027) with title *"Edge-AI Powered Smart Traffic Signal System"*, capacity *2 students*.
-4. Switch to **HOD** $\to$ Review the proposal under **"Pending Approvals"** $\to$ Approve it. The proposal moves into the **Approved Project Pool**.
-
-### Flow 5: Student Preference Ranking & Validation
-1. Log in as **Student 1** (`student1@department.local`).
-2. Navigate to **"Projects"** $\to$ **"Project Preferences"**.
-3. The interface lists all approved projects matching the student's Program and Batch.
-4. Select preferences:
-   - **Preference 1:** *Autonomous Drone Navigation System*
-   - **Preference 2:** *Decentralized Electronic Health Records on Blockchain*
-   - **Preference 3:** *Edge-AI Powered Smart Traffic Signal System*
-5. Click **"Save Preferences"**. Notice that client and server validations reject duplicate projects or duplicate rank assignments.
-
-### Flow 6: Deterministic Auto-Allocation & HOD Finalization
-1. Log in as **HOD** (`hod@department.local`).
-2. Navigate to **"Project Allocations"** in the sidebar.
-3. Select **Program:** *B.Tech CSE*, **Batch:** *2023-2027*.
-4. Click **"Run Auto Allocation"**.
-   - The allocation engine executes deterministically, ranking students by CGPA and matching top available choices within project capacities.
-5. The interface displays the **Allocation Preview (DRAFT)** with capacity utilization meters and unallocated counts.
-6. Click **"Finalize Allocations"**. The status locks to **FINALIZED**.
-7. Switch back to **Student 1** $\to$ Click **"My Allocated Project"**. The confirmed project topic and faculty supervisor are now displayed.
-8. Switch to **Faculty 1** $\to$ Click **"My Assigned Students"**. The newly allocated student appears under their supervision list.
-
-### Flow 7: Department Analytics & Append-Only Audit Trail
-1. Log in as **HOD** or **Admin**.
-2. Navigate to **"Reports & Analytics"**:
-   - Inspect request breakdown charts (OD, Leave, Permissions).
-   - Inspect activity budget allocations and participant totals.
-   - Inspect project allocation percentage and supervisor distribution.
-3. Navigate to **"Audit Logs"**:
-   - Inspect the immutable chronological ledger of all actions: User logins, request submissions, approval decisions, and allocation runs.
-   - Verify that IP addresses, actor identities, and before/after payloads are preserved.
-
----
-
-## 6. Local Installation & Setup Guide
+## 5. Local Installation & Setup Guide
 
 ### Prerequisites
 - **Node.js:** v18.x or v20.x or v24.x
@@ -342,7 +262,7 @@ npm run dev
 
 ---
 
-## 7. Docker & Containerized Setup
+## 6. Docker & Containerized Setup
 
 To launch the full system using Docker and Docker Compose:
 
@@ -357,7 +277,7 @@ Services spun up:
 
 ---
 
-## 8. Automated Testing & Code Quality
+## 7. Automated Testing & Code Quality
 
 The backend includes a comprehensive integration test suite built with **Vitest** and **Supertest** covering authentication, RBAC, workflows, request creation, preference submission, auto-allocation, and analytics.
 
@@ -395,7 +315,7 @@ cd client && node ./node_modules/typescript/bin/tsc --noEmit
 
 ---
 
-## 9. Documentation Reference
+## 8. Documentation Reference
 
 Detailed documentation is available in the [`docs/`](./docs/) directory:
 - [**Viva / Defense Preparation Guide (`docs/viva-notes.md`)**](./docs/viva-notes.md) - Complete Q&A for lab examiners.
